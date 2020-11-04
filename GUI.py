@@ -3,6 +3,7 @@ def About():
     print("This is a simple example of a menu")
     
 top = Tk()
+top.geometry("700x500")
 menu = Menu(top)
 top.config(menu=menu)
 filemenu = Menu(menu)
