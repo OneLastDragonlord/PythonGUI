@@ -1,18 +1,18 @@
-from tkinter import *
+import tkinter as tk
 def About():
     print("This is a simple example of a menu")
     
-top = Tk()
+top = tk.Tk()
 top.geometry("700x500")
-menu = Menu(top)
+menu = tk.Menu(top)
 top.config(menu=menu)
-filemenu = Menu(menu)
+filemenu = tk.Menu(menu)
 menu.add_cascade(label="Home", menu=filemenu)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=top.quit)
 
-helpmenu = Menu(menu)
+helpmenu = tk.Menu(menu)
 menu.add_cascade(label="Help", menu=helpmenu)
 helpmenu.add_command(label="About...", command=About)
 
-mainloop()
+tk.mainloop()
