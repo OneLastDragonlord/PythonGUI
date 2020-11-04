@@ -23,7 +23,7 @@ class Root(Tk):
         self.addingSubTabs(self.tab2)
     
     def addingSubTabs(self, tab):
-        labelFrame1 = ttk.LabelFrame(tab, text="first")
+        labelFrame1 = ttk.LabelFrame(tab)
         labelFrame1.grid(column = 0, row = 0, padx = 0, pady = 0)
         tabControl1 = ttk.Notebook(tab)
         self.tab3 = ttk.Frame(tabControl1)
@@ -32,8 +32,28 @@ class Root(Tk):
         tabControl1.add(self.tab4, text="Grafieken")
         self.tab5 = ttk.Frame(tabControl1)
         tabControl1.add(self.tab5, text="Instellingen")
-        tabControl1.grid(column = 0, row = 0)
+        tabControl1.grid(column = 0, row = 0, sticky="W")
+        self.addingHome(self.tab3)
+        self.addingGrafieken(self.tab4)
+        self.addingInstellingen(self.tab5)
         
+    def addingHome(self,tab):
+        labelFrame = ttk.LabelFrame(tab)
+        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
+        label = ttk.Label(labelFrame,text = "Home", width=120)
+        label.grid(column = 0, row = 0, sticky="W")
+
+    def addingGrafieken(self,tab):
+        labelFrame = ttk.LabelFrame(tab)
+        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
+        label = ttk.Label(labelFrame,text = "Home", width=120)
+        label.grid(column = 0, row = 0, sticky="W")
+
+    def addingInstellingen(self,tab):
+        labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
+        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
+        label = ttk.Label(labelFrame,text = "Home", width=120)
+        label.grid( sticky="E")
 
 if __name__ == '__main__':
     root = Root()
