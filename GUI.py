@@ -38,6 +38,7 @@ class Root(Tk):
         self.addingHome(self.tab3)
         self.addingGrafieken(self.tab4)
         self.addingInstellingen(self.tab5)
+        #self.addHomeknoppen(self.tab3)
         
     def addingHome(self,tab):
         Root.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
@@ -46,13 +47,33 @@ class Root(Tk):
         Root.time()
         Root.labelHome.pack(anchor="center")
         Root.labelHome.pack()
+        Root.buttonAan = tk.Button(tab, text="Aan", width=15, height=3)
+        Root.buttonAan.pack()
+        Root.buttonAan.place(x=70, y=400)
+        Root.buttonUit = tk.Button(tab, text="Uit", width=15, height=3)
+        Root.buttonUit.pack()
+        Root.buttonUit.place(x=185, y=400)
+        Root.buttonAutAan = tk.Button(tab, text="Aan", width=15, height=3)
+        Root.buttonAutAan.pack()
+        Root.buttonAutAan.place(x=330, y=400)
+        Root.buttonAutUit = tk.Button(tab, text="Uit", width=15, height=3)
+        Root.buttonAutUit.pack()
+        Root.buttonAutUit.place(x=445, y=400)
+        Root.buttonStop = tk.Button(tab, text="Stop", width=15, height=3)
+        Root.buttonStop.pack()
+        Root.buttonStop.place(x=590, y=400)
         
+    # def addHomeKnoppen(self,tab):
+    #     self.buttonAan = tk.Button(self.tab, text ="Aan", width=15, height=2)
+    #     self.buttonAan.pack()
+    #     self.buttonAan.place(x=100, y=300)
 
     def addingGrafieken(self,tab):
         labelFrame = ttk.LabelFrame(tab)
-        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
+        labelFrame.grid(column = 0, row = 0, padx = 0, ipady = 250)
         label = ttk.Label(labelFrame,text = "Home", width=120)
         label.grid(column = 0, row = 0, sticky="W")
+        
 
     def addingInstellingen(self,tab):
         labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
