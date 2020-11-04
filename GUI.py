@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import Tk
+from tkinter import Listbox
+from time import strftime
 
 #functions
 class Root(Tk):
@@ -38,10 +40,13 @@ class Root(Tk):
         self.addingInstellingen(self.tab5)
         
     def addingHome(self,tab):
-        labelFrame = ttk.LabelFrame(tab)
-        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
-        label = ttk.Label(labelFrame,text = "Home", width=120)
-        label.grid(column = 0, row = 0, sticky="W")
+        Root.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
+            background = 'purple', 
+            foreground = 'white') 
+        Root.time()
+        Root.labelHome.pack(anchor="center")
+        Root.labelHome.pack()
+        
 
     def addingGrafieken(self,tab):
         labelFrame = ttk.LabelFrame(tab)
@@ -54,6 +59,11 @@ class Root(Tk):
         labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
         label = ttk.Label(labelFrame,text = "Home", width=120)
         label.grid( sticky="E")
+
+    def time(): 
+        string = strftime('%H:%M:%S %p') 
+        Root.labelHome.config(text = string) 
+        Root.labelHome.after(1000, Root.time) 
 
 if __name__ == '__main__':
     root = Root()
