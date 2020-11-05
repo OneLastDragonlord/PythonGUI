@@ -41,7 +41,7 @@ class Root(Tk):
         self.addingInstellingen(self.tab5)
         #self.addHomeknoppen(self.tab3)
     
-    def sendDataHome(welke):
+    def sendDataHome(self, welke):
         #ser = serial.Serial('COM3', 9600)
         if welke == "Aan":
             #ser.write()
@@ -56,28 +56,28 @@ class Root(Tk):
             print("Stop")
         
     def addingHome(self,tab):
-        Root.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
+        self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
             background = 'purple', 
             foreground = 'white') 
-        Root.time()
+        self.time()
         #elelele
-        Root.labelHome.pack(anchor="center")
-        Root.labelHome.pack()
-        Root.buttonAan = tk.Button(tab, text="Aan", command= lambda: Root.sendDataHome("Aan"), width=15, height=3)
-        Root.buttonAan.pack()
-        Root.buttonAan.place(x=70, y=400)
-        Root.buttonUit = tk.Button(tab, text="Uit", command= lambda: Root.sendDataHome("Uit"), width=15, height=3)
-        Root.buttonUit.pack()
-        Root.buttonUit.place(x=185, y=400)
-        Root.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: Root.sendDataHome("AutAan"), width=15, height=3)
-        Root.buttonAutAan.pack()
-        Root.buttonAutAan.place(x=330, y=400)
-        Root.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: Root.sendDataHome("AutUit"), width=15, height=3)
-        Root.buttonAutUit.pack()
-        Root.buttonAutUit.place(x=445, y=400)
-        Root.buttonStop = tk.Button(tab, text="Stop", command= lambda: Root.sendDataHome("Stop"),width=15, height=3)
-        Root.buttonStop.pack()
-        Root.buttonStop.place(x=590, y=400)
+        self.labelHome.pack(anchor="center")
+        self.labelHome.pack()
+        self.buttonAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("Aan"), width=15, height=3)
+        self.buttonAan.pack()
+        self.buttonAan.place(x=70, y=400)
+        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("Uit"), width=15, height=3)
+        self.buttonUit.pack()
+        self.buttonUit.place(x=185, y=400)
+        self.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("AutAan"), width=15, height=3)
+        self.buttonAutAan.pack()
+        self.buttonAutAan.place(x=330, y=400)
+        self.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("AutUit"), width=15, height=3)
+        self.buttonAutUit.pack()
+        self.buttonAutUit.place(x=445, y=400)
+        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("Stop"),width=15, height=3)
+        self.buttonStop.pack()
+        self.buttonStop.place(x=590, y=400)
         
     # def addHomeKnoppen(self,tab):
     #     self.buttonAan = tk.Button(self.tab, text ="Aan", width=15, height=2)
@@ -87,21 +87,21 @@ class Root(Tk):
     def addingGrafieken(self,tab):
         #labelFrame = ttk.LabelFrame(tab)
         #labelFrame.grid(column = 0, row = 0, padx = 0, ipady = 250)
-        label = tk.Label(tab,text = "Home", width=30)
-        label.grid(row = 50, column = 100)
+        self.label = tk.Label(tab,text = "Home", width=30)
+        self.label.grid(row = 50, column = 100)
         #label.pack(expand=True)
         
 
     def addingInstellingen(self,tab):
-        labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
-        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 250)
-        label = ttk.Label(labelFrame,text = "Home", width=120)
-        label.grid( sticky="E")
+        self.labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
+        self.labelFrame.grid(column = 0, row = 0, padx = 0, pady = 250)
+        self.label = ttk.Label(self.labelFrame,text = "Home", width=120)
+        self.label.grid( sticky="E")
 
-    def time(): 
+    def time(self): 
         string = strftime('%H:%M:%S %p') 
-        Root.labelHome.config(text = string) 
-        Root.labelHome.after(1000, Root.time) 
+        self.labelHome.config(text = string) 
+        self.labelHome.after(1000, self.time) 
 
     
 
