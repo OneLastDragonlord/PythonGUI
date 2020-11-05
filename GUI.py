@@ -43,17 +43,9 @@ class Root(Tk):
         #self.addHomeknoppen(self.tab3)
     
     def sendDataHome(self, welke, ser):
-        if welke == "In":
-            ser.write("roll_in")
-            #print("Hij gaat in")
-        if welke == "Uit":
-            print("Hij gaat uit")
-        if welke == "AutAan":
-            print("Hij is auto aan")
-        if welke == "AutUit":
-            print("Hij is auto uit")
-        if welke == "Stop":
-            print("Stop")
+        print(welke)
+        ser.write(welke.encode('utf-8'))
+        
         
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
@@ -63,19 +55,19 @@ class Root(Tk):
         #elelele
         self.labelHome.pack(anchor="center")
         self.labelHome.pack()
-        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("In", ser), width=15, height=3)
+        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("rol_in*", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
-        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("Uit", ser), width=15, height=3)
+        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("rol_uit*", ser), width=15, height=3)
         self.buttonUit.pack()
         self.buttonUit.place(x=185, y=400)
-        self.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("AutAan", ser), width=15, height=3)
+        self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto", ser), width=15, height=3)
         self.buttonAutAan.pack()
         self.buttonAutAan.place(x=330, y=400)
-        self.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("AutUit", ser), width=15, height=3)
+        self.buttonAutUit = tk.Button(tab, text="Auto Uit", command= lambda: self.sendDataHome("set_manual*", ser), width=15, height=3)
         self.buttonAutUit.pack()
         self.buttonAutUit.place(x=445, y=400)
-        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("Stop", ser),width=15, height=3)
+        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("stop*", ser),width=15, height=3)
         self.buttonStop.pack()
         self.buttonStop.place(x=590, y=400)
         
