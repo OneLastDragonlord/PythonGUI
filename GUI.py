@@ -4,15 +4,16 @@ from tkinter import ttk
 from tkinter import Tk
 from tkinter import Listbox
 from time import strftime
+#import serial
 
 #functions
 class Root(Tk):
+    
     def __init__(self):
         #window
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
-
         #tabs
         tabControl = ttk.Notebook(self)
         self.tab1 = ttk.Frame(tabControl)
@@ -22,7 +23,7 @@ class Root(Tk):
         tabControl.pack(expand=1,fill="both")
 
         self.addingSubTabs(self.tab1)
-        self.addingSubTabs(self.tab2)
+        #self.addingSubTabs(self.tab2)
     
     def addingSubTabs(self, tab):
         labelFrame1 = ttk.LabelFrame(tab)
@@ -39,6 +40,20 @@ class Root(Tk):
         self.addingGrafieken(self.tab4)
         self.addingInstellingen(self.tab5)
         #self.addHomeknoppen(self.tab3)
+    
+    def sendDataHome(welke):
+        #ser = serial.Serial('COM3', 9600)
+        if welke == "Aan":
+            #ser.write()
+            print("Hij is aan")
+        if welke == "Uit":
+            print("Hij is uit")
+        if welke == "AutAan":
+            print("Hij is auto aan")
+        if welke == "AutUit":
+            print("Hij is auto uit")
+        if welke == "Stop":
+            print("Stop")
         
     def addingHome(self,tab):
         Root.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
@@ -47,19 +62,19 @@ class Root(Tk):
         Root.time()
         Root.labelHome.pack(anchor="center")
         Root.labelHome.pack()
-        Root.buttonAan = tk.Button(tab, text="Aan", width=15, height=3)
+        Root.buttonAan = tk.Button(tab, text="Aan", command= lambda: Root.sendDataHome("Aan"), width=15, height=3)
         Root.buttonAan.pack()
         Root.buttonAan.place(x=70, y=400)
-        Root.buttonUit = tk.Button(tab, text="Uit", width=15, height=3)
+        Root.buttonUit = tk.Button(tab, text="Uit", command= lambda: Root.sendDataHome("Uit"), width=15, height=3)
         Root.buttonUit.pack()
         Root.buttonUit.place(x=185, y=400)
-        Root.buttonAutAan = tk.Button(tab, text="Aan", width=15, height=3)
+        Root.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: Root.sendDataHome("AutAan"), width=15, height=3)
         Root.buttonAutAan.pack()
         Root.buttonAutAan.place(x=330, y=400)
-        Root.buttonAutUit = tk.Button(tab, text="Uit", width=15, height=3)
+        Root.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: Root.sendDataHome("AutUit"), width=15, height=3)
         Root.buttonAutUit.pack()
         Root.buttonAutUit.place(x=445, y=400)
-        Root.buttonStop = tk.Button(tab, text="Stop", width=15, height=3)
+        Root.buttonStop = tk.Button(tab, text="Stop", command= lambda: Root.sendDataHome("Stop"),width=15, height=3)
         Root.buttonStop.pack()
         Root.buttonStop.place(x=590, y=400)
         
@@ -69,15 +84,16 @@ class Root(Tk):
     #     self.buttonAan.place(x=100, y=300)
 
     def addingGrafieken(self,tab):
-        labelFrame = ttk.LabelFrame(tab)
-        labelFrame.grid(column = 0, row = 0, padx = 0, ipady = 250)
-        label = ttk.Label(labelFrame,text = "Home", width=120)
-        label.grid(column = 0, row = 0, sticky="W")
+        #labelFrame = ttk.LabelFrame(tab)
+        #labelFrame.grid(column = 0, row = 0, padx = 0, ipady = 250)
+        label = tk.Label(tab,text = "Home", width=30)
+        label.grid(row = 50, column = 100)
+        #label.pack(expand=True)
         
 
     def addingInstellingen(self,tab):
         labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
-        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 0)
+        labelFrame.grid(column = 0, row = 0, padx = 0, pady = 250)
         label = ttk.Label(labelFrame,text = "Home", width=120)
         label.grid( sticky="E")
 
@@ -85,6 +101,8 @@ class Root(Tk):
         string = strftime('%H:%M:%S %p') 
         Root.labelHome.config(text = string) 
         Root.labelHome.after(1000, Root.time) 
+
+    
 
 if __name__ == '__main__':
     root = Root()
