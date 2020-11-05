@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkinter import Tk
 from tkinter import Listbox
 from time import strftime
-#import serial
+import serial
 
 #functions
 class Root(Tk):
@@ -14,6 +14,7 @@ class Root(Tk):
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
+        self.ser = serial.Serial('COM3', 9600)
         #tabs
         tabControl = ttk.Notebook(self)
         self.tab1 = ttk.Frame(tabControl)
@@ -36,18 +37,17 @@ class Root(Tk):
         self.tab5 = ttk.Frame(tabControl1)
         tabControl1.add(self.tab5, text="Instellingen")
         tabControl1.grid(column = 0, row = 0, sticky="W")
-        self.addingHome(self.tab3)
+        self.addingHome(self.tab3, self.ser)
         self.addingGrafieken(self.tab4)
         self.addingInstellingen(self.tab5)
         #self.addHomeknoppen(self.tab3)
     
-    def sendDataHome(self, welke):
-        #ser = serial.Serial('COM3', 9600)00
-        if welke == "Aan":
-            #ser.write()
-            print("Hij is aan")
+    def sendDataHome(self, welke, ser):
+        if welke == "In":
+            ser.write("roll_in")
+            #print("Hij gaat in")
         if welke == "Uit":
-            print("Hij is uit")
+            print("Hij gaat uit")
         if welke == "AutAan":
             print("Hij is auto aan")
         if welke == "AutUit":
@@ -55,7 +55,7 @@ class Root(Tk):
         if welke == "Stop":
             print("Stop")
         
-    def addingHome(self,tab):
+    def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
             background = 'purple', 
             foreground = 'white') 
@@ -63,19 +63,19 @@ class Root(Tk):
         #elelele
         self.labelHome.pack(anchor="center")
         self.labelHome.pack()
-        self.buttonAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("Aan"), width=15, height=3)
+        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("In", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
-        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("Uit"), width=15, height=3)
+        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("Uit", ser), width=15, height=3)
         self.buttonUit.pack()
         self.buttonUit.place(x=185, y=400)
-        self.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("AutAan"), width=15, height=3)
+        self.buttonAutAan = tk.Button(tab, text="Aan", command= lambda: self.sendDataHome("AutAan", ser), width=15, height=3)
         self.buttonAutAan.pack()
         self.buttonAutAan.place(x=330, y=400)
-        self.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("AutUit"), width=15, height=3)
+        self.buttonAutUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("AutUit", ser), width=15, height=3)
         self.buttonAutUit.pack()
         self.buttonAutUit.place(x=445, y=400)
-        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("Stop"),width=15, height=3)
+        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("Stop", ser),width=15, height=3)
         self.buttonStop.pack()
         self.buttonStop.place(x=590, y=400)
         
