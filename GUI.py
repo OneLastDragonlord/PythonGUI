@@ -60,6 +60,7 @@ class Root(Tk):
             background = 'purple', 
             foreground = 'white') 
         Root.time()
+        #elelele
         Root.labelHome.pack(anchor="center")
         Root.labelHome.pack()
         Root.buttonAan = tk.Button(tab, text="Aan", command= lambda: Root.sendDataHome("Aan"), width=15, height=3)
