@@ -42,7 +42,7 @@ class Root(Tk):
         #self.addHomeknoppen(self.tab3)
     
     def sendDataHome(welke):
-        #ser = serial.Serial('COM3', 9600)
+        #ser = serial.Serial('COM3', 9600)00
         if welke == "Aan":
             #ser.write()
             print("Hij is aan")
