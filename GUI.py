@@ -128,15 +128,25 @@ class Root(Tk):
     def stuurInstellingen(self, ser):
         self.dataUitrol = self.maxUitrol.get()
         self.dataTemperatuur = self.setTemperatuur.get()
-        if self.dataTemperatuur == int or self.dataTemperatuur == float:
-            print(self.dataTemperatuur)
-        else:
-            print("Geen geldige temperatuur")
+        self.getalGrens = str(self.getalGrens)
+        self.uitrolSturen = "set_max "+self.dataUitrol+"*"
+        self.temperatuurSturen = "set_limit_tempsensor "+self.dataTemperatuur+"*"
+        self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
+        print(self.temperatuurSturen)
+        print(self.uitrolSturen)
+        print(self.lichtSturen)
+
+
+
+        # if self.dataTemperatuur == int or self.dataTemperatuur == float:
+        #     print(self.dataTemperatuur)
+        # else:
+        #     print("Geen geldige temperatuur")
             
-        if type(self.dataUitrol) == int or type(self.dataUitrol) == float:
-            print(self.dataUitrol)
-        else:
-            print("Geen geldige uitrol")
+        # if type(self.dataUitrol) == int or type(self.dataUitrol) == float:
+        #     print(self.dataUitrol)
+        # else:
+        #     print("Geen geldige uitrol")
             
         #print(self.dataUitrol)
         #print(self.dataTemperatuur)
