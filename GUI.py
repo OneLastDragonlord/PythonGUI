@@ -24,7 +24,7 @@ class Root(Tk):
         tabControl.pack(expand=1,fill="both")
 
         self.addingSubTabs(self.tab1)
-        #self.addingSubTabs(self.tab2)
+        ##self.addingSubTabs(self.tab2)
     
     def addingSubTabs(self, tab):
         labelFrame1 = ttk.LabelFrame(tab)
@@ -43,7 +43,6 @@ class Root(Tk):
         self.addingGrafieken(self.tab4)
         self.addingInstellingen(self.tab5, self.ser)
         self.addNiks(self.tab6)
-        #self.addHomeknoppen(self.tab3)
     
     def sendDataHome(self, welke, ser):
         print(welke)
@@ -75,17 +74,11 @@ class Root(Tk):
         self.buttonStop.pack()
         self.buttonStop.place(x=590, y=400)
         
-    # def addHomeKnoppen(self,tab):
-    #     self.buttonAan = tk.Button(self.tab, text ="Aan", width=15, height=2)
-    #     self.buttonAan.pack()
-    #     self.buttonAan.place(x=100, y=300)
 
     def addingGrafieken(self,tab):
-        #labelFrame = ttk.LabelFrame(tab)
-        #labelFrame.grid(column = 0, row = 0, padx = 0, ipady = 250)
         self.label = tk.Label(tab,text = "Home", width=30)
         self.label.grid(row = 50, column = 100)
-        #label.pack(expand=True)
+        
         
     def addNiks(self, tab):
         self.labelFrame = ttk.LabelFrame(tab)
