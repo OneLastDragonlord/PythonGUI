@@ -36,23 +36,27 @@ class Root(Tk):
         tabControl1.add(self.tab4, text="Grafieken")
         self.tab5 = ttk.Frame(tabControl1)
         tabControl1.add(self.tab5, text="Instellingen")
+        self.tab6 = ttk.Frame(tabControl1)
+        tabControl1.add(self.tab6)
         tabControl1.grid(column = 0, row = 0, sticky="W")
         self.addingHome(self.tab3, self.ser)
         self.addingGrafieken(self.tab4)
-        self.addingInstellingen(self.tab5)
+        self.addingInstellingen(self.tab5, self.ser)
+        self.addNiks(self.tab6)
         #self.addHomeknoppen(self.tab3)
     
     def sendDataHome(self, welke, ser):
         print(welke)
         ser.write(welke.encode('utf-8'))
         
+    def sendLichtgrens(self, getal):
+        self.getalGrens = getal
         
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
             background = 'purple', 
             foreground = 'white') 
         self.time()
-        #elelele
         self.labelHome.pack(anchor="center")
         self.labelHome.pack()
         self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("rol_in*", ser), width=15, height=3)
@@ -83,12 +87,60 @@ class Root(Tk):
         self.label.grid(row = 50, column = 100)
         #label.pack(expand=True)
         
-
-    def addingInstellingen(self,tab):
-        self.labelFrame = ttk.LabelFrame(tab, text="Huidige Instellingen")
+    def addNiks(self, tab):
+        self.labelFrame = ttk.LabelFrame(tab)
         self.labelFrame.grid(column = 0, row = 0, padx = 0, pady = 250)
-        self.label = ttk.Label(self.labelFrame,text = "Home", width=120)
-        self.label.grid( sticky="E")
+        self.label = tk.Label(self.labelFrame, width=110)
+        self.label.pack()
+        
+
+    def addingInstellingen(self,tab, ser):
+        self.label2 = tk.Label(tab, text='Temperatuur grens (Celsius):')
+        self.label2.place(x=20, y=20)
+        self.setTemperatuur = tk.Entry(tab)
+        self.setTemperatuur.place(x=25, y=55)
+        self.label4 = tk.Label(tab, text='Lichtgrens:')
+        self.label4.place(x=20, y=140)
+        self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(1),width=11, height=2)
+        self.zeerLaag.pack()
+        self.zeerLaag.place(x=10, y=170)
+        self.laag = tk.Button(tab, text="laag", command= lambda: self.sendLichtgrens(2),width=11, height=2)
+        self.laag.pack()
+        self.laag.place(x=97, y=170)
+        self.gemiddeld = tk.Button(tab, text="gemiddeld", command= lambda: self.sendLichtgrens(3),width=11, height=2)
+        self.gemiddeld.pack()
+        self.gemiddeld.place(x=184, y=170)
+        self.hoog = tk.Button(tab, text="hoog", command= lambda: self.sendLichtgrens(4),width=11, height=2)
+        self.hoog.pack()
+        self.hoog.place(x=271, y=170)
+        self.zeerHoog = tk.Button(tab, text="zeer hoog", command= lambda: self.sendLichtgrens(5),width=11, height=2)
+        self.zeerHoog.pack()
+        self.zeerHoog.place(x=358, y=170)
+        self.label3 = tk.Label(tab, text='Maximale uitrol (cm):')
+        self.label3.place(x=20, y=265)
+        self.maxUitrol = tk.Entry(tab)
+        self.maxUitrol.place(x=25, y= 300)
+        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(ser), width=15, height=3)
+        self.buttonMax.pack()
+        self.buttonMax.place(x=50, y=400)
+
+
+    def stuurInstellingen(self, ser):
+        self.dataUitrol = self.maxUitrol.get()
+        self.dataTemperatuur = self.setTemperatuur.get()
+        if self.dataTemperatuur == int or self.dataTemperatuur == float:
+            print(self.dataTemperatuur)
+        else:
+            print("Geen geldige temperatuur")
+            
+        if type(self.dataUitrol) == int or type(self.dataUitrol) == float:
+            print(self.dataUitrol)
+        else:
+            print("Geen geldige uitrol")
+            
+        #print(self.dataUitrol)
+        #print(self.dataTemperatuur)
+        #print(self.getalGrens)
 
     def time(self): 
         string = strftime('%H:%M:%S %p') 
