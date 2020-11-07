@@ -5,16 +5,21 @@ from tkinter import Tk
 from tkinter import Listbox
 from time import strftime
 import serial
+from PyQt5 import QtWidgets
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
+import sys  # We need sys so that we can pass argv to QApplication
+import os
 
 #functions
 class Root(Tk):
-    
     def __init__(self):
         #window
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
         self.ser = serial.Serial('COM3', 9600)
+        self.sendLichtgrens(3)
         #tabs
         tabControl = ttk.Notebook(self)
         self.tab1 = ttk.Frame(tabControl)
@@ -43,28 +48,49 @@ class Root(Tk):
         self.addingGrafieken(self.tab4)
         self.addingInstellingen(self.tab5, self.ser)
         self.addNiks(self.tab6)
+
+    def grafieken (self):
+        self.graphWidget = pg.PlotWidget()
+        self.setCentralWidget(self.graphWidget)
+
+        hour = [1,2,3,4,5,6,7,8,9,10]
+        temperature = [30,32,34,32,33,31,29,32,35,45]
+
+        # plot data: x, y values
+        self.graphWidget.plot(hour, temperature)
     
     def sendDataHome(self, welke, ser):
         print(welke)
         ser.write(welke.encode('utf-8'))
         
     def sendLichtgrens(self, getal):
-        self.getalGrens = getal
-        
+        try:
+            self.getalGrens = getal
+        except:
+            self.getalGrens = None
+            
+    def getAuto(self, ser):
+        self.randvariable = "get_status_auto*"
+        ser.write(self.randvariable.encode('utf-8'))
+        b = ser.read.decode('ascii')
+        print(b)  
+
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
             background = 'purple', 
             foreground = 'white') 
         self.time()
         self.labelHome.pack(anchor="center")
+        self.labelHome.place(y=100)
         self.labelHome.pack()
-        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("rol_in*", ser), width=15, height=3)
+        self.getAuto(self.ser)
+        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
-        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("rol_uit*", ser), width=15, height=3)
+        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("roll_out*", ser), width=15, height=3)
         self.buttonUit.pack()
         self.buttonUit.place(x=185, y=400)
-        self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto", ser), width=15, height=3)
+        self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto*", ser), width=15, height=3)
         self.buttonAutAan.pack()
         self.buttonAutAan.place(x=330, y=400)
         self.buttonAutUit = tk.Button(tab, text="Auto Uit", command= lambda: self.sendDataHome("set_manual*", ser), width=15, height=3)
@@ -76,8 +102,7 @@ class Root(Tk):
         
 
     def addingGrafieken(self,tab):
-        self.label = tk.Label(tab,text = "Home", width=30)
-        self.label.grid(row = 50, column = 100)
+        self.grafieken()
         
         
     def addNiks(self, tab):
@@ -119,19 +144,33 @@ class Root(Tk):
 
 
     def stuurInstellingen(self, ser):
-        self.dataUitrol = self.maxUitrol.get()
-        self.dataTemperatuur = self.setTemperatuur.get()
+        
+        try:
+            self.dataTemperatuur = float(self.setTemperatuur.get())
+            self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
+            ser.write(self.temperatuurSturen.encode('utf-8'))
+            print(self.temperatuurSturen)
+        except:
+            print("Geen geldige temperatuur")
+
         self.getalGrens = str(self.getalGrens)
-        self.uitrolSturen = "set_max "+self.dataUitrol+"*"
-        self.temperatuurSturen = "set_limit_tempsensor "+self.dataTemperatuur+"*"
         self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
-        print(self.temperatuurSturen)
-        print(self.uitrolSturen)
+        ser.write(self.lichtSturen.encode('utf-8'))
         print(self.lichtSturen)
+        
+        try:
+            self.dataUitrol = float(self.maxUitrol.get())
+            self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
+            ser.write(self.uitrolSturen.encode('utf-8'))
+            print(self.uitrolSturen)
+        except:
+            print("Geen geldige uitrol")
+        
+        
 
 
 
-        # if self.dataTemperatuur == int or self.dataTemperatuur == float:
+        # if isinstance(self.dataTemperatuur,int) or isinstance(self.dataTemperatuur,float):
         #     print(self.dataTemperatuur)
         # else:
         #     print("Geen geldige temperatuur")
@@ -149,7 +188,6 @@ class Root(Tk):
         string = strftime('%H:%M:%S %p') 
         self.labelHome.config(text = string) 
         self.labelHome.after(1000, self.time) 
-
     
 
 if __name__ == '__main__':
