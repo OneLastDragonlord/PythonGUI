@@ -5,11 +5,12 @@ from tkinter import Tk
 from tkinter import Listbox
 from time import strftime
 import serial
-from PyQt5 import QtWidgets
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+# from PyQt5 import QtWidgets
+# from pyqtgraph import PlotWidget, plot
+# import pyqtgraph as pg
 import sys  # We need sys so that we can pass argv to QApplication
 import os
+import time
 
 #functions
 class Root(Tk):
@@ -49,15 +50,15 @@ class Root(Tk):
         self.addingInstellingen(self.tab5, self.ser)
         self.addNiks(self.tab6)
 
-    def grafieken (self):
-        self.graphWidget = pg.PlotWidget()
-        self.setCentralWidget(self.graphWidget)
+    # def grafieken (self):
+    #     self.graphWidget = pg.PlotWidget()
+    #     self.setCentralWidget(self.graphWidget)
 
-        hour = [1,2,3,4,5,6,7,8,9,10]
-        temperature = [30,32,34,32,33,31,29,32,35,45]
+    #     hour = [1,2,3,4,5,6,7,8,9,10]
+    #     temperature = [30,32,34,32,33,31,29,32,35,45]
 
-        # plot data: x, y values
-        self.graphWidget.plot(hour, temperature)
+    #     # plot data: x, y values
+    #     self.graphWidget.plot(hour, temperature)
     
     def sendDataHome(self, welke, ser):
         print(welke)
@@ -72,8 +73,10 @@ class Root(Tk):
     def getAuto(self, ser):
         self.randvariable = "get_status_auto*"
         ser.write(self.randvariable.encode('utf-8'))
-        b = ser.read.decode('ascii')
-        print(b)  
+        time.sleep(1.0)
+        if ser.in_waiting >0:
+            b = ser.read().decode('utf-8')
+            print(b)  
 
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
@@ -102,7 +105,8 @@ class Root(Tk):
         
 
     def addingGrafieken(self,tab):
-        self.grafieken()
+        #self.grafieken()
+        pass
         
         
     def addNiks(self, tab):
