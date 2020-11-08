@@ -19,7 +19,7 @@ class Root(Tk):
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
-        self.ser = serial.Serial('COM3', 9600)
+        self.ser = serial.Serial('COM4', 9600)
         self.sendLichtgrens(3)
         #tabs
         tabControl = ttk.Notebook(self)
@@ -65,7 +65,7 @@ class Root(Tk):
         if welke == "roll_in*" or welke == "roll_out*":
             self.sendDataHome("set_manual*", ser)
             time.sleep(0.1) 
-        ser.write(welke.encode('utf-8'))
+        ser.write(welke.encode('ascii'))
         
     def sendLichtgrens(self, getal):
         try:
@@ -75,10 +75,10 @@ class Root(Tk):
             
     def getAuto(self, ser):
         self.randvariable = "get_status_auto*"
-        ser.write(self.randvariable.encode('utf-8'))
+        ser.write(self.randvariable.encode('ascii'))
         time.sleep(1.0)
         if ser.in_waiting >0:
-            b = ser.read().decode('utf-8')
+            b = ser.read().decode('ascii')
             print(b) 
         else:
             print("geen lines te printen") 
@@ -155,24 +155,27 @@ class Root(Tk):
 
 
     def stuurInstellingen(self, ser):
-        
         try:
-            self.dataTemperatuur = float(self.setTemperatuur.get())
+            self.dataTemperatuur = int(self.setTemperatuur.get())
             self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
-            ser.write(self.temperatuurSturen.encode('utf-8'))
+            ser.write(self.temperatuurSturen.encode('ascii'))
             print(self.temperatuurSturen)
         except:
             print("Geen geldige temperatuur")
+        
+        time.sleep(0.1) 
 
         self.getalGrens = str(self.getalGrens)
         self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
-        ser.write(self.lichtSturen.encode('utf-8'))
+        ser.write(self.lichtSturen.encode('ascii'))
         print(self.lichtSturen)
         
+        time.sleep(0.1) 
+
         try:
-            self.dataUitrol = float(self.maxUitrol.get())
+            self.dataUitrol = int(self.maxUitrol.get())
             self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
-            ser.write(self.uitrolSturen.encode('utf-8'))
+            ser.write(self.uitrolSturen.encode('ascii'))
             print(self.uitrolSturen)
         except:
             print("Geen geldige uitrol")
