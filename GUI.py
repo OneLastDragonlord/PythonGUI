@@ -63,8 +63,8 @@ class Root(Tk):
     def sendDataHome(self, welke, ser):
         print(welke)
         if welke == "roll_in*" or welke == "roll_out*":
-            ser.write("set_manual*".encode('utf-8'))
-            time.sleep(1) 
+            self.sendDataHome("set_manual*", ser)
+            time.sleep(0.1) 
         ser.write(welke.encode('utf-8'))
         
     def sendLichtgrens(self, getal):
