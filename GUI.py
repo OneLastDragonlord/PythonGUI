@@ -62,6 +62,9 @@ class Root(Tk):
     
     def sendDataHome(self, welke, ser):
         print(welke)
+        if welke == "roll_in*" or welke == "roll_out*":
+            ser.write("set_manual*".encode('utf-8'))
+            time.sleep(1) 
         ser.write(welke.encode('utf-8'))
         
     def sendLichtgrens(self, getal):
@@ -76,7 +79,9 @@ class Root(Tk):
         time.sleep(1.0)
         if ser.in_waiting >0:
             b = ser.read().decode('utf-8')
-            print(b)  
+            print(b) 
+        else:
+            print("geen lines te printen") 
 
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
@@ -86,7 +91,9 @@ class Root(Tk):
         self.labelHome.pack(anchor="center")
         self.labelHome.place(y=100)
         self.labelHome.pack()
-        self.getAuto(self.ser)
+        
+        self.buttonAan = tk.Button(tab, text="status", command= lambda: self.getAuto(self.ser), width=15, height=3)
+        self.buttonAan.pack()
         self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
