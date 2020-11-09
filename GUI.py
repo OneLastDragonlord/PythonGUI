@@ -185,14 +185,37 @@ class Root(Tk):
         self.buttonMax.place(x=50, y=400)
 
     def addCurrentInstellingen(self, tab, ser):
+        self.varTemperatuur = str(self.getCurrentInstellingen("get_limit_tempsensor*", ser)) + " ℃"
+        self.varLichtgrens = self.getCurrentInstellingen("get_limit_lightsensor*", ser)
+        self.varUitrol = str(self.getCurrentInstellingen("get_max*", ser)) + " cm"
+
         self.labelHuidig = tk.Label(tab, text='Intstellingen Scherm 1')
         self.labelHuidig.place(x=600, y=10)
         self.labelTempIngesteld = tk.Label(tab, text='Temperatuurgrens:')
         self.labelTempIngesteld.place(x=600, y=40)
+        self.temperButton = tk.Button(tab, text=self.varTemperatuur, width=11, height=2)
+        self.temperButton.pack()
+        self.temperButton.place(x=600, y=60)
         self.labelLichtIngesteld = tk.Label(tab, text='Lichtgrens:')
         self.labelLichtIngesteld.place(x=600, y=80)
+        self.lichtButton = tk.Button(tab, text=self.varLichtgrens, width=11, height=2)
+        self.lichtButton.pack()
+        self.lichtButton.place(x=600, y=100)
         self.labelUitrolIngesteld = tk.Label(tab, text= 'Uitrol:')
         self.labelUitrolIngesteld.place(x=600, y=120)
+        self.uitrolButton = tk.Button(tab, text=self.varTemperatuur, width=11, height=2)
+        self.uitrolButton.pack()
+        self.uitrolButton.place(x=600, y=140)
+
+    def getCurrentInstellingen(self,zin, ser):
+        ser.write(zin.encode('utf-8'))
+        temp = self.readSerial(ser)
+        if temp[-2:] == "OK":
+            return temp[:-2]
+        else:
+            return "Niet goed"
+
+
 
     def stuurInstellingen(self, ser):
         try:
