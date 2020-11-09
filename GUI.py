@@ -152,6 +152,7 @@ class Root(Tk):
 
     def addingInstellingen(self,tab, ser):
         self.addGrafiekInstellingen(tab,ser)
+        self.addCurrentInstellingen(tab,ser)
 
     def addGrafiekInstellingen(self,tab,ser):
         self.label2 = tk.Label(tab, text='Temperatuur grens (Celsius):')
@@ -183,8 +184,15 @@ class Root(Tk):
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
-    # def addCurrentInstellingen(self, tab, ser):
-    #     self.
+    def addCurrentInstellingen(self, tab, ser):
+        self.labelHuidig = tk.Label(tab, text='Intstellingen Scherm 1')
+        self.labelHuidig.place(x=600, y=10)
+        self.labelTempIngesteld = tk.Label(tab, text='Temperatuurgrens:')
+        self.labelTempIngesteld.place(x=600, y=40)
+        self.labelLichtIngesteld = tk.Label(tab, text='Lichtgrens:')
+        self.labelLichtIngesteld.place(x=600, y=80)
+        self.labelUitrolIngesteld = tk.Label(tab, text= 'Uitrol:')
+        self.labelUitrolIngesteld.place(x=600, y=120)
 
     def stuurInstellingen(self, ser):
         try:
