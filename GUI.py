@@ -116,9 +116,6 @@ class Root(Tk):
         self.labelHome.pack(anchor="center")
         self.labelHome.place(y=100)
         self.labelHome.pack()
-        
-        self.buttonAan = tk.Button(tab, text="status", command= lambda: self.getAuto(self.ser), width=15, height=3)
-        self.buttonAan.pack()
         self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
