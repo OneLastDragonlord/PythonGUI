@@ -207,17 +207,17 @@ class Root(Tk):
         self.labelTempIngesteld.place(x=600, y=40)
         self.temperButton = tk.Button(tab, text=self.varTemperatuur, width=11, height=2)
         self.temperButton.pack()
-        self.temperButton.place(x=600, y=60)
+        self.temperButton.place(x=600, y=70)
         self.labelLichtIngesteld = tk.Label(tab, text='Lichtgrens:')
-        self.labelLichtIngesteld.place(x=600, y=80)
+        self.labelLichtIngesteld.place(x=600, y=125)
         self.lichtButton = tk.Button(tab, text=self.varLichtgrens, width=11, height=2)
         self.lichtButton.pack()
-        self.lichtButton.place(x=600, y=100)
+        self.lichtButton.place(x=600, y=155)
         self.labelUitrolIngesteld = tk.Label(tab, text= 'Uitrol:')
-        self.labelUitrolIngesteld.place(x=600, y=120)
+        self.labelUitrolIngesteld.place(x=600, y=210)
         self.uitrolButton = tk.Button(tab, text=self.varUitrol, width=11, height=2)
         self.uitrolButton.pack()
-        self.uitrolButton.place(x=600, y=140)
+        self.uitrolButton.place(x=600, y=240)
 
     def getCurrentInstellingen(self,zin, ser):
         time.sleep(0.1)
@@ -260,22 +260,6 @@ class Root(Tk):
             print("Geen geldige uitrol")
         self.addCurrentInstellingen(tab,ser)
         
-
-
-
-        # if isinstance(self.dataTemperatuur,int) or isinstance(self.dataTemperatuur,float):
-        #     print(self.dataTemperatuur)
-        # else:
-        #     print("Geen geldige temperatuur")
-            
-        # if type(self.dataUitrol) == int or type(self.dataUitrol) == float:
-        #     print(self.dataUitrol)
-        # else:
-        #     print("Geen geldige uitrol")
-            
-        #print(self.dataUitrol)
-        #print(self.dataTemperatuur)
-        #print(self.getalGrens)
 
     def time(self): 
         string = strftime('%H:%M:%S %p') 
