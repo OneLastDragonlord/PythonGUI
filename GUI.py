@@ -196,7 +196,7 @@ class Root(Tk):
         self.buttonMax.place(x=50, y=400)
 
     def addCurrentInstellingen(self, tab, ser):
-        time.sleep(0.1)
+        time.sleep(0.4)
         self.varTemperatuur = str(self.getCurrentInstellingen("get_limit_tempsensor*", ser)) + " ℃"
         time.sleep(0.5)
         self.varLichtgrens = self.getCurrentInstellingen("get_limit_lightsensor*", ser)
@@ -257,6 +257,8 @@ class Root(Tk):
             print(self.uitrolSturen)
         except:
             print("Geen geldige uitrol")
+        ser.read()
+        time.sleep(0.1)
         self.addCurrentInstellingen(tab,ser)
         
 
