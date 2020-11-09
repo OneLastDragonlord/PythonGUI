@@ -191,7 +191,7 @@ class Root(Tk):
         self.label3.place(x=20, y=265)
         self.maxUitrol = tk.Entry(tab)
         self.maxUitrol.place(x=25, y= 300)
-        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(ser), width=15, height=3)
+        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(tab, ser), width=15, height=3)
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
@@ -230,32 +230,47 @@ class Root(Tk):
 
 
 
-    def stuurInstellingen(self, ser):
-        try:
+    def stuurInstellingen(self, tab, ser):
+        if isint(self.setTemperatuur.get()):
             self.dataTemperatuur = int(self.setTemperatuur.get())
             self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
             ser.write(self.temperatuurSturen.encode('ascii'))
-            print(self.temperatuurSturen)
-        except:
-            print("Geen geldige temperatuur")
-        
+            time.sleep(0.1)
+            temp = self.readSerial(ser)
+            if temp[-2:] == "OK":
+                print(self.temperatuurSturen)
+            else:
+                # kijken welke error
+                print("dit is error")
+                #handshake
+
         time.sleep(0.1) 
 
         self.getalGrens = str(self.getalGrens)
         self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
         ser.write(self.lichtSturen.encode('ascii'))
-        print(self.lichtSturen)
+        temp = self.readSerial(ser)
+        if temp[-2:] == "OK":
+            print(self.lichtSturen)
+
         
         time.sleep(0.1) 
 
-        try:
+        if isint(self.maxUitrol.get()):
             self.dataUitrol = int(self.maxUitrol.get())
             self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
-            ser.write(self.uitrolSturen.encode('ascii'))
-            print(self.uitrolSturen)
-        except:
-            print("Geen geldige uitrol")
-        
+            ser.write(self.uitrolStoren.encode('ascii'))
+            time.sleep(0.1)
+            temp = self.readSerial(ser)
+            if temp[-2:] == "OK":
+                print(self.uitrolSturen)
+            else:
+                # kijken welke error
+                print("dit is error")
+                #handshake
+
+        time.sleep(0.1)
+        self.addCurrentInstellingen(tab, ser)
         
 
 
@@ -279,6 +294,13 @@ class Root(Tk):
         self.labelHome.config(text = string, borderwidth=10) 
         self.labelHome.place(x=215,y=100)
         self.labelHome.after(1000, self.time) 
+
+    def isint(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
     
 
 if __name__ == '__main__':
