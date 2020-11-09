@@ -51,11 +51,11 @@ class Root(Tk):
         tabControl1.grid(column = 0, row = 0, sticky="W")
         if welkeser == 1:
             self.addingHome(self.tab3, self.ser1)
-            self.addingGrafieken(self.tab4, self.ser1)
+            self.addingGrafieken(self.tab4)
             self.addingInstellingen(self.tab5, self.ser1)
         if welkeser == 2:
             self.addingHome(self.tab3, self.ser2)
-            self.addingGrafieken(self.tab4, self.ser2)
+            self.addingGrafieken(self.tab4)
             self.addingInstellingen(self.tab5, self.ser2)
         self.addNiks(self.tab6)
 
@@ -158,32 +158,33 @@ class Root(Tk):
         self.buttonStop.place(x=590, y=400)
 
     def addingGrafieken(self, ser):
-        self.dfTemp = DataFrame(data,columns=['Time','Temperature'])
-        figureTemp = plt.Figure(dpi=100)
-        axTemp = figureTemp.add_subplot(111)
-        lineTemp = FigureCanvasTkAgg(figureTemp, self.tab4)
-        lineTemp.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
-        self.dfTemp = self.dfTemp[['Time','Temperature']].groupby('Time').sum()
-        self.dfTemp.plot(kind='line', legend=True, ax=axTemp, color='r',marker='o', fontsize=10)
-        axTemp.set_title('Time Vs. Temperature')
+        # self.dfTemp = DataFrame(data,columns=['Time','Temperature'])
+        # figureTemp = plt.Figure(dpi=100)
+        # axTemp = figureTemp.add_subplot(111)
+        # lineTemp = FigureCanvasTkAgg(figureTemp, self.tab4)
+        # lineTemp.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+        # self.dfTemp = self.dfTemp[['Time','Temperature']].groupby('Time').sum()
+        # self.dfTemp.plot(kind='line', legend=True, ax=axTemp, color='r',marker='o', fontsize=10)
+        # axTemp.set_title('Time Vs. Temperature')
 
-        self.refreshButton = tk.Button(tab, text='refresh',command=lambda: self.updateGrafieken(tab))
-        self.refreshButton.pack()
+        # self.refreshButton = tk.Button(tab, text='refresh',command=lambda: self.updateGrafieken(tab))
+        # self.refreshButton.pack()
 
-        self.dataLight = {'Time': ['15:31','15:32', '15:33','15:34','15:35', '15:36','15:37','15:38', '15:39'],
-         'Light': [250, 300, 350, 400,450, 400, 350, 300 ,250]
-        }
-        self.dfLight = DataFrame(self.dataLight,columns=['Time','Light'])
-        self.figureLight = plt.Figure(dpi=100)
-        axLight = self.figureLight.add_subplot(111)
-        lineLight = FigureCanvasTkAgg(self.figureLight, self.tab4)
-        lineLight.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
-        self.dfLight = self.dfLight[['Time','Light']].groupby('Time').sum()
-        self.dfLight.plot(kind='line', legend=True, ax=axLight, color='r',marker='o', fontsize=10)
-        axLight.set_title('Time Vs. Light')
+        # self.dataLight = {'Time': ['15:31','15:32', '15:33','15:34','15:35', '15:36','15:37','15:38', '15:39'],
+        #  'Light': [250, 300, 350, 400,450, 400, 350, 300 ,250]
+        # }
+        # self.dfLight = DataFrame(self.dataLight,columns=['Time','Light'])
+        # self.figureLight = plt.Figure(dpi=100)
+        # axLight = self.figureLight.add_subplot(111)
+        # lineLight = FigureCanvasTkAgg(self.figureLight, self.tab4)
+        # lineLight.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+        # self.dfLight = self.dfLight[['Time','Light']].groupby('Time').sum()
+        # self.dfLight.plot(kind='line', legend=True, ax=axLight, color='r',marker='o', fontsize=10)
+        # axLight.set_title('Time Vs. Light')
+        pass
  
-    def updateGrafieken(self,tab):
-        self.figureLight.clear()
+    # def updateGrafieken(self,tab):
+    #     self.figureLight.clear()
         
         
     def addNiks(self, tab):
