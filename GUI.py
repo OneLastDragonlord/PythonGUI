@@ -191,7 +191,7 @@ class Root(Tk):
         self.label3.place(x=20, y=265)
         self.maxUitrol = tk.Entry(tab)
         self.maxUitrol.place(x=25, y= 300)
-        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(ser), width=15, height=3)
+        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(tab,ser), width=15, height=3)
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
@@ -224,13 +224,16 @@ class Root(Tk):
         temp= self.getDataHome(zin, ser)
         time.sleep(0.1)
         if temp[-2:] == "OK":
+            if(temp[0:2] != int):
+                return temp[0]
+
             return temp[:-2]
         else:
             return "Niet goed"
 
 
 
-    def stuurInstellingen(self, ser):
+    def stuurInstellingen(self,tab, ser):
         try:
             self.dataTemperatuur = int(self.setTemperatuur.get())
             self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
@@ -255,7 +258,7 @@ class Root(Tk):
             print(self.uitrolSturen)
         except:
             print("Geen geldige uitrol")
-        
+        self.addCurrentInstellingen(tab,ser)
         
 
 
