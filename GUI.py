@@ -172,19 +172,19 @@ class Root(Tk):
         self.setTemperatuur.place(x=25, y=55)
         self.label4 = tk.Label(tab, text='Lichtgrens:')
         self.label4.place(x=20, y=140)
-        self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(1),width=11, height=2)
+        self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(200),width=11, height=2)
         self.zeerLaag.pack()
         self.zeerLaag.place(x=10, y=170)
-        self.laag = tk.Button(tab, text="laag", command= lambda: self.sendLichtgrens(2),width=11, height=2)
+        self.laag = tk.Button(tab, text="laag", command= lambda: self.sendLichtgrens(350),width=11, height=2)
         self.laag.pack()
         self.laag.place(x=97, y=170)
-        self.gemiddeld = tk.Button(tab, text="gemiddeld", command= lambda: self.sendLichtgrens(3),width=11, height=2)
+        self.gemiddeld = tk.Button(tab, text="gemiddeld", command= lambda: self.sendLichtgrens(500),width=11, height=2)
         self.gemiddeld.pack()
         self.gemiddeld.place(x=184, y=170)
-        self.hoog = tk.Button(tab, text="hoog", command= lambda: self.sendLichtgrens(4),width=11, height=2)
+        self.hoog = tk.Button(tab, text="hoog", command= lambda: self.sendLichtgrens(650),width=11, height=2)
         self.hoog.pack()
         self.hoog.place(x=271, y=170)
-        self.zeerHoog = tk.Button(tab, text="zeer hoog", command= lambda: self.sendLichtgrens(5),width=11, height=2)
+        self.zeerHoog = tk.Button(tab, text="zeer hoog", command= lambda: self.sendLichtgrens(800),width=11, height=2)
         self.zeerHoog.pack()
         self.zeerHoog.place(x=358, y=170)
         self.label3 = tk.Label(tab, text='Maximale uitrol (cm):')
@@ -196,9 +196,11 @@ class Root(Tk):
         self.buttonMax.place(x=50, y=400)
 
     def addCurrentInstellingen(self, tab, ser):
-        
+        time.sleep(0.1)
         self.varTemperatuur = str(self.getCurrentInstellingen("get_limit_tempsensor*", ser)) + " ℃"
+        time.sleep(0.5)
         self.varLichtgrens = self.getCurrentInstellingen("get_limit_lightsensor*", ser)
+        time.sleep(0.5)
         self.varUitrol = str(self.getCurrentInstellingen("get_max*", ser)) + " cm"
 
         self.labelHuidig = tk.Label(tab, text='Intstellingen Scherm 1')
