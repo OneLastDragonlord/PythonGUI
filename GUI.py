@@ -19,7 +19,7 @@ class Root(Tk):
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
-        self.ser = serial.Serial('COM4', 9600)
+        self.ser = serial.Serial('COM3', 9600)
         self.sendLichtgrens(3)
         #tabs
         tabControl = ttk.Notebook(self)
@@ -59,13 +59,36 @@ class Root(Tk):
 
     #     # plot data: x, y values
     #     self.graphWidget.plot(hour, temperature)
-    
+    def readSerial(self,ser):
+        b=''
+        while ser.in_waiting >0:
+            time.sleep(0.1)
+            c = ser.read().decode('utf-8')
+            if c != '\x00':
+                b = b+c
+        return b
+
     def sendDataHome(self, welke, ser):
-        print(welke)
-        if welke == "roll_in*" or welke == "roll_out*":
+        #status van auto verkrijgen en checken
+        status =''
+        self.randvariable = "get_status_auto*"
+        ser.write(self.randvariable.encode('utf-8'))
+        time.sleep(0.1)
+        status = self.readSerial(ser)
+        time.sleep(0.5)
+        if (welke == "roll_in*" or welke == "roll_out*") and  status == '1OK':
             self.sendDataHome("set_manual*", ser)
-            time.sleep(0.1) 
-        ser.write(welke.encode('ascii'))
+            time.sleep(0.1)
+        
+        ser.write(welke.encode('utf-8'))
+        if welke == "roll_in*" or welke == "roll_out*":
+            time.sleep(5)
+        else:
+            time.sleep(0.5)
+        b = self.readSerial(ser)
+        if len(b) > 0:
+            print(b)   
+        print(welke)
         
     def sendLichtgrens(self, getal):
         try:
@@ -74,14 +97,16 @@ class Root(Tk):
             self.getalGrens = None
             
     def getAuto(self, ser):
+        b = []
         self.randvariable = "get_status_auto*"
-        ser.write(self.randvariable.encode('ascii'))
-        time.sleep(1.0)
-        if ser.in_waiting >0:
-            b = ser.read().decode('ascii')
-            print(b) 
-        else:
-            print("geen lines te printen") 
+        ser.write(self.randvariable.encode('utf-8'))
+        time.sleep(0.1)
+        while ser.in_waiting >0:
+            c = ser.read().decode('utf-8')
+            if c != '\x00':
+                b.append(c)
+            time.sleep(0.1)
+        print(b) 
 
     def addingHome(self,tab,ser):
         self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
