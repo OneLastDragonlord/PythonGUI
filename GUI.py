@@ -172,35 +172,33 @@ class Root(Tk):
         self.setTemperatuur.place(x=25, y=55)
         self.label4 = tk.Label(tab, text='Lichtgrens:')
         self.label4.place(x=20, y=140)
-        self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(200),width=11, height=2)
+        self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(1),width=11, height=2)
         self.zeerLaag.pack()
         self.zeerLaag.place(x=10, y=170)
-        self.laag = tk.Button(tab, text="laag", command= lambda: self.sendLichtgrens(350),width=11, height=2)
+        self.laag = tk.Button(tab, text="laag", command= lambda: self.sendLichtgrens(2),width=11, height=2)
         self.laag.pack()
         self.laag.place(x=97, y=170)
-        self.gemiddeld = tk.Button(tab, text="gemiddeld", command= lambda: self.sendLichtgrens(500),width=11, height=2)
+        self.gemiddeld = tk.Button(tab, text="gemiddeld", command= lambda: self.sendLichtgrens(3),width=11, height=2)
         self.gemiddeld.pack()
         self.gemiddeld.place(x=184, y=170)
-        self.hoog = tk.Button(tab, text="hoog", command= lambda: self.sendLichtgrens(650),width=11, height=2)
+        self.hoog = tk.Button(tab, text="hoog", command= lambda: self.sendLichtgrens(4),width=11, height=2)
         self.hoog.pack()
         self.hoog.place(x=271, y=170)
-        self.zeerHoog = tk.Button(tab, text="zeer hoog", command= lambda: self.sendLichtgrens(800),width=11, height=2)
+        self.zeerHoog = tk.Button(tab, text="zeer hoog", command= lambda: self.sendLichtgrens(5),width=11, height=2)
         self.zeerHoog.pack()
         self.zeerHoog.place(x=358, y=170)
         self.label3 = tk.Label(tab, text='Maximale uitrol (cm):')
         self.label3.place(x=20, y=265)
         self.maxUitrol = tk.Entry(tab)
         self.maxUitrol.place(x=25, y= 300)
-        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(tab,ser), width=15, height=3)
+        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(ser), width=15, height=3)
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
     def addCurrentInstellingen(self, tab, ser):
-        time.sleep(0.1)
+        
         self.varTemperatuur = str(self.getCurrentInstellingen("get_limit_tempsensor*", ser)) + " ℃"
-        time.sleep(0.5)
         self.varLichtgrens = self.getCurrentInstellingen("get_limit_lightsensor*", ser)
-        time.sleep(0.5)
         self.varUitrol = str(self.getCurrentInstellingen("get_max*", ser)) + " cm"
 
         self.labelHuidig = tk.Label(tab, text='Intstellingen Scherm 1')
@@ -209,17 +207,17 @@ class Root(Tk):
         self.labelTempIngesteld.place(x=600, y=40)
         self.temperButton = tk.Button(tab, text=self.varTemperatuur, width=11, height=2)
         self.temperButton.pack()
-        self.temperButton.place(x=600, y=70)
+        self.temperButton.place(x=600, y=60)
         self.labelLichtIngesteld = tk.Label(tab, text='Lichtgrens:')
-        self.labelLichtIngesteld.place(x=600, y=125)
+        self.labelLichtIngesteld.place(x=600, y=80)
         self.lichtButton = tk.Button(tab, text=self.varLichtgrens, width=11, height=2)
         self.lichtButton.pack()
-        self.lichtButton.place(x=600, y=155)
+        self.lichtButton.place(x=600, y=100)
         self.labelUitrolIngesteld = tk.Label(tab, text= 'Uitrol:')
-        self.labelUitrolIngesteld.place(x=600, y=210)
+        self.labelUitrolIngesteld.place(x=600, y=120)
         self.uitrolButton = tk.Button(tab, text=self.varUitrol, width=11, height=2)
         self.uitrolButton.pack()
-        self.uitrolButton.place(x=600, y=240)
+        self.uitrolButton.place(x=600, y=140)
 
     def getCurrentInstellingen(self,zin, ser):
         time.sleep(0.1)
@@ -232,7 +230,7 @@ class Root(Tk):
 
 
 
-    def stuurInstellingen(self,tab, ser):
+    def stuurInstellingen(self, ser):
         try:
             self.dataTemperatuur = int(self.setTemperatuur.get())
             self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
@@ -257,8 +255,24 @@ class Root(Tk):
             print(self.uitrolSturen)
         except:
             print("Geen geldige uitrol")
-        self.addCurrentInstellingen(tab,ser)
         
+        
+
+
+
+        # if isinstance(self.dataTemperatuur,int) or isinstance(self.dataTemperatuur,float):
+        #     print(self.dataTemperatuur)
+        # else:
+        #     print("Geen geldige temperatuur")
+            
+        # if type(self.dataUitrol) == int or type(self.dataUitrol) == float:
+        #     print(self.dataUitrol)
+        # else:
+        #     print("Geen geldige uitrol")
+            
+        #print(self.dataUitrol)
+        #print(self.dataTemperatuur)
+        #print(self.getalGrens)
 
     def time(self): 
         string = strftime('%H:%M:%S %p') 
