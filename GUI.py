@@ -50,13 +50,13 @@ class Root(Tk):
         tabControl1.add(self.tab6)
         tabControl1.grid(column = 0, row = 0, sticky="W")
         if welkeser == 1:
-            self.addingHome(self.tab3, self.ser1)
+            self.addingHome(self.tab3, self.ser1, welkeser)
             self.addingGrafieken(self.tab4)
-            self.addingInstellingen(self.tab5, self.ser1)
+            self.addingInstellingen(self.tab5, self.ser1, welkeser)
         if welkeser == 2:
-            self.addingHome(self.tab3, self.ser2)
+            self.addingHome(self.tab3, self.ser2, welkeser)
             self.addingGrafieken(self.tab4)
-            self.addingInstellingen(self.tab5, self.ser2)
+            self.addingInstellingen(self.tab5, self.ser2, welkeser)
         self.addNiks(self.tab6)
 
     # def grafieken (self):
@@ -77,7 +77,7 @@ class Root(Tk):
                 b = b+c
         return b
 
-    def sendDataHome(self, welke, ser):
+    def sendDataHome(self, welke, ser, welkeser):
         #status van auto verkrijgen en checken
         status =''
         self.randvariable = "get_status_auto*"
@@ -127,7 +127,7 @@ class Root(Tk):
             time.sleep(0.1)
         print(b) 
 
-    def addingHome(self,tab,ser):
+    def addingHome(self,tab,ser,welkeser):
         self.labelHome = tk.Label(tab, font = ('calibri', 50, 'bold'), 
             relief="solid",
             foreground = 'black')
@@ -135,27 +135,45 @@ class Root(Tk):
         self.labelHome.pack(anchor="center")
         self.labelHome.place(y=100)
         self.labelHome.pack()
-        self.addHomeButtons(tab,ser)
+        self.addHomeButtons(tab,ser, welkeser)
         
 
     
 
-    def addHomeButtons(self, tab, ser):
-        self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser), width=15, height=3)
-        self.buttonAan.pack()
-        self.buttonAan.place(x=70, y=400)
-        self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("roll_out*", ser), width=15, height=3)
-        self.buttonUit.pack()
-        self.buttonUit.place(x=185, y=400)
-        self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto*", ser), width=15, height=3)
-        self.buttonAutAan.pack()
-        self.buttonAutAan.place(x=330, y=400)
-        self.buttonAutUit = tk.Button(tab, text="Auto Uit", command= lambda: self.sendDataHome("set_manual*", ser), width=15, height=3)
-        self.buttonAutUit.pack()
-        self.buttonAutUit.place(x=445, y=400)
-        self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("stop*", ser),width=15, height=3)
-        self.buttonStop.pack()
-        self.buttonStop.place(x=590, y=400)
+    def addHomeButtons(self, tab, ser, welkeser):
+        if welkeser == 1:
+            self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser, welkeser), width=15, height=3)
+            self.buttonAan.pack()
+            self.buttonAan.place(x=70, y=400)
+            self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("roll_out*", ser, welkeser), width=15, height=3)
+            self.buttonUit.pack()
+            self.buttonUit.place(x=185, y=400)
+            self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto*", ser, welkeser), width=15, height=3)
+            self.buttonAutAan.pack()
+            self.buttonAutAan.place(x=330, y=400)
+            self.buttonAutUit = tk.Button(tab, text="Auto Uit", command= lambda: self.sendDataHome("set_manual*", ser, welkeser), width=15, height=3)
+            self.buttonAutUit.pack()
+            self.buttonAutUit.place(x=445, y=400)
+            self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("stop*", ser, welkeser),width=15, height=3)
+            self.buttonStop.pack()
+            self.buttonStop.place(x=590, y=400)
+        if welkeser == 2:
+            self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser, welkeser), width=15, height=3)
+            self.buttonAan.pack()
+            self.buttonAan.place(x=70, y=400)
+            self.buttonUit = tk.Button(tab, text="Uit", command= lambda: self.sendDataHome("roll_out*", ser, welkeser), width=15, height=3)
+            self.buttonUit.pack()
+            self.buttonUit.place(x=185, y=400)
+            self.buttonAutAan = tk.Button(tab, text="Auto Aan", command= lambda: self.sendDataHome("set_auto*", ser, welkeser), width=15, height=3)
+            self.buttonAutAan.pack()
+            self.buttonAutAan.place(x=330, y=400)
+            self.buttonAutUit = tk.Button(tab, text="Auto Uit", command= lambda: self.sendDataHome("set_manual*", ser, welkeser), width=15, height=3)
+            self.buttonAutUit.pack()
+            self.buttonAutUit.place(x=445, y=400)
+            self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("stop*", ser, welkeser),width=15, height=3)
+            self.buttonStop.pack()
+            self.buttonStop.place(x=590, y=400)
+            
 
     def addingGrafieken(self, ser):
         # self.dfTemp = DataFrame(data,columns=['Time','Temperature'])
@@ -194,15 +212,19 @@ class Root(Tk):
         self.label.pack()
         
 
-    def addingInstellingen(self,tab, ser):
-        self.addGrafiekInstellingen(tab,ser)
-        self.addCurrentInstellingen(tab,ser)
+    def addingInstellingen(self,tab, ser, welkeser):
+        self.addGrafiekInstellingen(tab,ser, welkeser)
+        self.addCurrentInstellingen(tab,ser, welkeser)
 
-    def addGrafiekInstellingen(self,tab,ser):
+    def addGrafiekInstellingen(self,tab,ser, welkeser):
         self.label2 = tk.Label(tab, text='Temperatuur grens (Celsius):')
         self.label2.place(x=20, y=20)
-        self.setTemperatuur = tk.Entry(tab)
-        self.setTemperatuur.place(x=25, y=55)
+        if welkeser == 1:
+            self.setTemperatuur = tk.Entry(tab)
+            self.setTemperatuur.place(x=25, y=55)
+        if welkeser == 2:
+            self.setTemperatuur2 = tk.Entry(tab)
+            self.setTemperatuur2.place(x=25, y=55)
         self.label4 = tk.Label(tab, text='Lichtgrens:')
         self.label4.place(x=20, y=140)
         self.zeerLaag = tk.Button(tab, text="zeer laag", command= lambda: self.sendLichtgrens(200),width=11, height=2)
@@ -222,9 +244,13 @@ class Root(Tk):
         self.zeerHoog.place(x=358, y=170)
         self.label3 = tk.Label(tab, text='Maximale uitrol (cm):')
         self.label3.place(x=20, y=265)
-        self.maxUitrol = tk.Entry(tab)
-        self.maxUitrol.place(x=25, y= 300)
-        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(tab, ser), width=15, height=3)
+        if welkeser == 1:
+            self.maxUitrol = tk.Entry(tab)
+            self.maxUitrol.place(x=25, y= 300)
+        if welkeser == 2:
+            self.maxUitrol2 = tk.Entry(tab)
+            self.maxUitrol2.place(x=25, y= 300)
+        self.buttonMax = tk.Button(tab, text="Opslaan", command= lambda: self.stuurInstellingen(tab, ser, welkeser), width=15, height=3)
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
@@ -263,31 +289,34 @@ class Root(Tk):
 
 
 
-    def stuurInstellingen(self, tab, ser):
-        if self.isint(self.setTemperatuur.get()):
+    def stuurInstellingen(self, tab, ser, welkeser):
+        if welkeser == 1:
             self.dataTemperatuur = int(self.setTemperatuur.get())
-            self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
-            ser.write(self.temperatuurSturen.encode('ascii'))
-            time.sleep(0.1)
-            temp = self.readSerial(ser)
-            if temp[-2:] == "OK":
-                print(self.temperatuurSturen)
+        if welkeser == 2:
+            self.dataTemperatuur = int(self.setTemperatuur2.get())
+        self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
+        ser.write(self.temperatuurSturen.encode('ascii'))
+        time.sleep(0.1)
+        temp = self.readSerial(ser)
+        if temp[-2:] == "OK":
+            print(self.temperatuurSturen)
+        else:
+            error = self.handshake(temp, self.temperatuurSturen, ser)
+            if error == "hersteld":
+                print("error temperatuur instellen is " + error)
+            elif error == "niet hersteld":
+                print("error temperatuur instellen is " + error)
+            elif error == "onbekende error":
+                print("onbekende error bij temperatuur instellen")
             else:
-                error = self.handshake(temp, self.temperatuurSturen, ser)
-                if error == "hersteld":
-                    print("error temperatuur instellen is " + error)
-                elif error == "niet hersteld":
-                    print("error temperatuur instellen is " + error)
-                elif error == "onbekende error":
-                    print("onbekende error bij temperatuur instellen")
-                else:
-                    print("er is een grote fout bij het temperatuur instellen..")
+                print("er is een grote fout bij het temperatuur instellen..")
 
         time.sleep(0.5) 
 
         self.getalGrens = str(self.getalGrens)
         self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
         ser.write(self.lichtSturen.encode('ascii'))
+        time.sleep(0.1)
         temp = self.readSerial(ser)
         if temp[-2:] == "OK":
             print(self.lichtSturen)
@@ -305,8 +334,11 @@ class Root(Tk):
         
         time.sleep(0.5) 
 
-        if self.isint(self.maxUitrol.get()):
+        
+        if welkeser == 1:
             self.dataUitrol = int(self.maxUitrol.get())
+        if welkeser == 2:
+            self.dataUitrol = int(self.maxUitrol2.get())
             self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
             ser.write(self.uitrolSturen.encode('ascii'))
             time.sleep(0.1)
