@@ -19,8 +19,11 @@ class Root(Tk):
         super(Root,self).__init__()
         self.title("Rolluik Legend")
         self.minsize(700,500)
-        self.ser = serial.Serial('COM3', 9600)
+        self.ser1 = serial.Serial('COM4', 9600)
+        self.ser2 = serial.Serial('COM3', 9600)
+        
         self.sendLichtgrens(3)
+        self.counter = 0
         time.sleep(2)
         #tabs
         tabControl = ttk.Notebook(self)
@@ -30,10 +33,10 @@ class Root(Tk):
         tabControl.add(self.tab2, text="Scherm 2")
         tabControl.pack(expand=1,fill="both")
 
-        self.addingSubTabs(self.tab1)
-        ##self.addingSubTabs(self.tab2)
+        self.addingSubTabs(self.tab1, 1)
+        self.addingSubTabs(self.tab2, 2)
     
-    def addingSubTabs(self, tab):
+    def addingSubTabs(self, tab, welkeser):
         labelFrame1 = ttk.LabelFrame(tab)
         labelFrame1.grid(column = 0, row = 0, padx = 0, pady = 0)
         tabControl1 = ttk.Notebook(tab)
@@ -46,9 +49,14 @@ class Root(Tk):
         self.tab6 = ttk.Frame(tabControl1)
         tabControl1.add(self.tab6)
         tabControl1.grid(column = 0, row = 0, sticky="W")
-        self.addingHome(self.tab3, self.ser)
-        self.addingGrafieken(self.tab4)
-        self.addingInstellingen(self.tab5, self.ser)
+        if welkeser == 1:
+            self.addingHome(self.tab3, self.ser1)
+            self.addingGrafieken(self.tab4, self.ser1)
+            self.addingInstellingen(self.tab5, self.ser1)
+        if welkeser == 2:
+            self.addingHome(self.tab3, self.ser2)
+            self.addingGrafieken(self.tab4, self.ser2)
+            self.addingInstellingen(self.tab5, self.ser2)
         self.addNiks(self.tab6)
 
     # def grafieken (self):
@@ -149,9 +157,33 @@ class Root(Tk):
         self.buttonStop.pack()
         self.buttonStop.place(x=590, y=400)
 
-    def addingGrafieken(self,tab):
-        #self.grafieken()
-        pass
+    def addingGrafieken(self, ser):
+        self.dfTemp = DataFrame(data,columns=['Time','Temperature'])
+        figureTemp = plt.Figure(dpi=100)
+        axTemp = figureTemp.add_subplot(111)
+        lineTemp = FigureCanvasTkAgg(figureTemp, self.tab4)
+        lineTemp.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+        self.dfTemp = self.dfTemp[['Time','Temperature']].groupby('Time').sum()
+        self.dfTemp.plot(kind='line', legend=True, ax=axTemp, color='r',marker='o', fontsize=10)
+        axTemp.set_title('Time Vs. Temperature')
+
+        self.refreshButton = tk.Button(tab, text='refresh',command=lambda: self.updateGrafieken(tab))
+        self.refreshButton.pack()
+
+        self.dataLight = {'Time': ['15:31','15:32', '15:33','15:34','15:35', '15:36','15:37','15:38', '15:39'],
+         'Light': [250, 300, 350, 400,450, 400, 350, 300 ,250]
+        }
+        self.dfLight = DataFrame(self.dataLight,columns=['Time','Light'])
+        self.figureLight = plt.Figure(dpi=100)
+        axLight = self.figureLight.add_subplot(111)
+        lineLight = FigureCanvasTkAgg(self.figureLight, self.tab4)
+        lineLight.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+        self.dfLight = self.dfLight[['Time','Light']].groupby('Time').sum()
+        self.dfLight.plot(kind='line', legend=True, ax=axLight, color='r',marker='o', fontsize=10)
+        axLight.set_title('Time Vs. Light')
+ 
+    def updateGrafieken(self,tab):
+        self.figureLight.clear()
         
         
     def addNiks(self, tab):
@@ -240,11 +272,17 @@ class Root(Tk):
             if temp[-2:] == "OK":
                 print(self.temperatuurSturen)
             else:
-                # kijken welke error
-                print("dit is error")
-                #handshake
+                error = self.handshake(temp, self.temperatuurSturen, ser)
+                if error == "hersteld":
+                    print("error temperatuur instellen is " + error)
+                elif error == "niet hersteld":
+                    print("error temperatuur instellen is " + error)
+                elif error == "onbekende error":
+                    print("onbekende error bij temperatuur instellen")
+                else:
+                    print("er is een grote fout bij het temperatuur instellen..")
 
-        time.sleep(0.1) 
+        time.sleep(0.5) 
 
         self.getalGrens = str(self.getalGrens)
         self.lichtSturen = "set_limit_lightsensor "+self.getalGrens+"*"
@@ -252,9 +290,19 @@ class Root(Tk):
         temp = self.readSerial(ser)
         if temp[-2:] == "OK":
             print(self.lichtSturen)
+        else:
+            error = self.handshake(temp, self.lichtSturen, ser)
+            if error == "hersteld":
+                print("error lichtsturen is " + error)
+            elif error == "niet hersteld":
+                print("error lichtsturen is " + error)
+            elif error == "onbekende error":
+                print("onbekende error bij instellen lichtsturen")
+            else:
+                print("er is een grote fout met het instellen van de lichtgrens..")
 
         
-        time.sleep(0.1) 
+        time.sleep(0.5) 
 
         if self.isint(self.maxUitrol.get()):
             self.dataUitrol = int(self.maxUitrol.get())
@@ -265,13 +313,42 @@ class Root(Tk):
             if temp[-2:] == "OK":
                 print(self.uitrolSturen)
             else:
-                # kijken welke error
-                print("dit is error")
-                #handshake
+                error = self.handshake(temp, self.uitrolSturen, ser)
+                if error == "hersteld":
+                    print("error uitrol " + error)
+                elif error == "niet hersteld":
+                    print("error uitrol " + error)
+                elif error == "onbekende error":
+                    print("onbekende error bij het instellen van de uitrol")
+                else:
+                    print("er is een grote fout met de uitrolwaarde..")
 
         time.sleep(0.1)
         self.addCurrentInstellingen(tab, ser)
         
+    def handshake(self,received, send, ser):
+        if received == "ERR_1" or received == "ERR_2":
+            ser.write("handshake*".encode('utf-8'))
+            time.sleep(0.2)
+            temp = self.readSerial(ser)
+            print("Deze temp is leeg of ONLINE" + temp)
+            if self.counter < 4:
+                if temp == "":
+                    self.counter = self.counter + 1
+                    self.handshake(received, send, ser)
+                elif temp == "ONLINE":
+                    ser.write(send.encode('utf-8'))
+                    returnvalue = "hersteld"
+                    self.counter = 0
+                    return returnvalue
+                else:
+                    returnvalue = "onbekende error"
+                    self.counter = 0
+                    return returnvalue
+            else:
+                returnvalue = "niet hersteld"
+                self.counter = 0
+                return returnvalue
 
 
 
