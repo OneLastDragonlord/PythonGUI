@@ -128,13 +128,22 @@ class Root(Tk):
         print(b) 
 
     def addingHome(self,tab,ser,welkeser):
-        self.labelHome = tk.Label(tab, font = ('calibri', 50, 'bold'), 
-            relief="solid",
-            foreground = 'black')
-        self.time()
-        self.labelHome.pack(anchor="center")
-        self.labelHome.place(y=100)
-        self.labelHome.pack()
+        if welkeser == 1:
+            self.labelHome = tk.Label(tab, font = ('calibri', 50, 'bold'), 
+                relief="solid",
+                foreground = 'black')
+            self.time()
+            self.labelHome.pack(anchor="center")
+            self.labelHome.place(y=100)
+            self.labelHome.pack()
+        if welkeser == 2:
+            self.labelHome2 = tk.Label(tab, font = ('calibri', 50, 'bold'), 
+                relief="solid",
+                foreground = 'black')
+            self.time2()
+            self.labelHome2.pack(anchor="center")
+            self.labelHome2.place(y=100)
+            self.labelHome2.pack()
         self.addHomeButtons(tab,ser, welkeser)
         
 
@@ -214,7 +223,7 @@ class Root(Tk):
 
     def addingInstellingen(self,tab, ser, welkeser):
         self.addGrafiekInstellingen(tab,ser, welkeser)
-        self.addCurrentInstellingen(tab,ser, welkeser)
+        self.addCurrentInstellingen(tab,ser)
 
     def addGrafiekInstellingen(self,tab,ser, welkeser):
         self.label2 = tk.Label(tab, text='Temperatuur grens (Celsius):')
@@ -405,6 +414,12 @@ class Root(Tk):
         self.labelHome.place(x=215,y=100)
         self.labelHome.after(1000, self.time) 
 
+    def time2(self)
+        string = strftime('%H:%M:%S %p') 
+        self.labelHome2.config(text = string, borderwidth=10) 
+        self.labelHome2.place(x=215,y=100)
+        self.labelHome2.after(1000, self.time2) 
+        
     def isint(self, s):
         try: 
             int(s)
