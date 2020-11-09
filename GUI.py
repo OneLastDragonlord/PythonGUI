@@ -231,7 +231,7 @@ class Root(Tk):
 
 
     def stuurInstellingen(self, tab, ser):
-        if isint(self.setTemperatuur.get()):
+        if self.isint(self.setTemperatuur.get()):
             self.dataTemperatuur = int(self.setTemperatuur.get())
             self.temperatuurSturen = "set_limit_tempsensor "+str(self.dataTemperatuur)+"*"
             ser.write(self.temperatuurSturen.encode('ascii'))
@@ -256,10 +256,10 @@ class Root(Tk):
         
         time.sleep(0.1) 
 
-        if isint(self.maxUitrol.get()):
+        if self.isint(self.maxUitrol.get()):
             self.dataUitrol = int(self.maxUitrol.get())
             self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
-            ser.write(self.uitrolStoren.encode('ascii'))
+            ser.write(self.uitrolSturen.encode('ascii'))
             time.sleep(0.1)
             temp = self.readSerial(ser)
             if temp[-2:] == "OK":
@@ -295,12 +295,12 @@ class Root(Tk):
         self.labelHome.place(x=215,y=100)
         self.labelHome.after(1000, self.time) 
 
-    def isint(s):
-    try: 
-        int(s)
-        return True
-    except ValueError:
-        return False
+    def isint(self, s):
+        try: 
+            int(s)
+            return True
+        except ValueError:
+            return False
     
 
 if __name__ == '__main__':
