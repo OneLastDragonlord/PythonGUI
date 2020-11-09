@@ -21,6 +21,7 @@ class Root(Tk):
         self.minsize(700,500)
         self.ser = serial.Serial('COM3', 9600)
         self.sendLichtgrens(3)
+        time.sleep(2)
         #tabs
         tabControl = ttk.Notebook(self)
         self.tab1 = ttk.Frame(tabControl)
@@ -89,6 +90,16 @@ class Root(Tk):
         if len(b) > 0:
             print(b)   
         print(welke)
+
+    def getDataHome(self, welke, ser):
+        time.sleep(0.5)
+        ser.write(welke.encode('utf-8'))
+        time.sleep(0.5)
+        b = self.readSerial(ser)
+        if len(b) > 0:
+            print(b)   
+        print(welke)
+        return b
         
     def sendLichtgrens(self, getal):
         try:
@@ -109,9 +120,9 @@ class Root(Tk):
         print(b) 
 
     def addingHome(self,tab,ser):
-        self.labelHome = ttk.Label(tab, font = ('calibri', 40, 'bold'), 
-            background = 'purple', 
-            foreground = 'white') 
+        self.labelHome = tk.Label(tab, font = ('calibri', 50, 'bold'), 
+            relief="solid",
+            foreground = 'black')
         self.time()
         self.labelHome.pack(anchor="center")
         self.labelHome.place(y=100)
@@ -185,6 +196,7 @@ class Root(Tk):
         self.buttonMax.place(x=50, y=400)
 
     def addCurrentInstellingen(self, tab, ser):
+        
         self.varTemperatuur = str(self.getCurrentInstellingen("get_limit_tempsensor*", ser)) + " ℃"
         self.varLichtgrens = self.getCurrentInstellingen("get_limit_lightsensor*", ser)
         self.varUitrol = str(self.getCurrentInstellingen("get_max*", ser)) + " cm"
@@ -203,13 +215,14 @@ class Root(Tk):
         self.lichtButton.place(x=600, y=100)
         self.labelUitrolIngesteld = tk.Label(tab, text= 'Uitrol:')
         self.labelUitrolIngesteld.place(x=600, y=120)
-        self.uitrolButton = tk.Button(tab, text=self.varTemperatuur, width=11, height=2)
+        self.uitrolButton = tk.Button(tab, text=self.varUitrol, width=11, height=2)
         self.uitrolButton.pack()
         self.uitrolButton.place(x=600, y=140)
 
     def getCurrentInstellingen(self,zin, ser):
-        ser.write(zin.encode('utf-8'))
-        temp = self.readSerial(ser)
+        time.sleep(0.1)
+        temp= self.getDataHome(zin, ser)
+        time.sleep(0.1)
         if temp[-2:] == "OK":
             return temp[:-2]
         else:
@@ -263,7 +276,8 @@ class Root(Tk):
 
     def time(self): 
         string = strftime('%H:%M:%S %p') 
-        self.labelHome.config(text = string) 
+        self.labelHome.config(text = string, borderwidth=10) 
+        self.labelHome.place(x=215,y=100)
         self.labelHome.after(1000, self.time) 
     
 
