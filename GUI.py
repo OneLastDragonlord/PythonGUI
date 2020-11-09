@@ -122,7 +122,7 @@ class Root(Tk):
         time.sleep(0.1)
         while ser.in_waiting >0:
             c = ser.read().decode('utf-8')
-            if c != '\x00':
+            if c != '\x00' and c != '\x80':
                 b.append(c)
             time.sleep(0.1)
         print(b) 
@@ -339,22 +339,22 @@ class Root(Tk):
             self.dataUitrol = int(self.maxUitrol.get())
         if welkeser == 2:
             self.dataUitrol = int(self.maxUitrol2.get())
-            self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
-            ser.write(self.uitrolSturen.encode('ascii'))
-            time.sleep(0.1)
-            temp = self.readSerial(ser)
-            if temp[-2:] == "OK":
-                print(self.uitrolSturen)
+        self.uitrolSturen = "set_max "+str(self.dataUitrol)+"*"
+        ser.write(self.uitrolSturen.encode('ascii'))
+        time.sleep(0.1)
+        temp = self.readSerial(ser)
+        if temp[-2:] == "OK":
+            print(self.uitrolSturen)
+        else:
+            error = self.handshake(temp, self.uitrolSturen, ser)
+            if error == "hersteld":
+                print("error uitrol " + error)
+            elif error == "niet hersteld":
+                print("error uitrol " + error)
+            elif error == "onbekende error":
+                print("onbekende error bij het instellen van de uitrol")
             else:
-                error = self.handshake(temp, self.uitrolSturen, ser)
-                if error == "hersteld":
-                    print("error uitrol " + error)
-                elif error == "niet hersteld":
-                    print("error uitrol " + error)
-                elif error == "onbekende error":
-                    print("onbekende error bij het instellen van de uitrol")
-                else:
-                    print("er is een grote fout met de uitrolwaarde..")
+                print("er is een grote fout met de uitrolwaarde..")
 
         time.sleep(0.1)
         self.addCurrentInstellingen(tab, ser)
