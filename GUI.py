@@ -224,9 +224,6 @@ class Root(Tk):
         temp= self.getDataHome(zin, ser)
         time.sleep(0.1)
         if temp[-2:] == "OK":
-            if(temp[0:2] != int):
-                return temp[0]
-
             return temp[:-2]
         else:
             return "Niet goed"
