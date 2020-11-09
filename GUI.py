@@ -116,6 +116,12 @@ class Root(Tk):
         self.labelHome.pack(anchor="center")
         self.labelHome.place(y=100)
         self.labelHome.pack()
+        self.addHomeButtons(tab,ser)
+        
+
+    
+
+    def addHomeButtons(self, tab, ser):
         self.buttonAan = tk.Button(tab, text="In", command= lambda: self.sendDataHome("roll_in*", ser), width=15, height=3)
         self.buttonAan.pack()
         self.buttonAan.place(x=70, y=400)
@@ -131,7 +137,6 @@ class Root(Tk):
         self.buttonStop = tk.Button(tab, text="Stop", command= lambda: self.sendDataHome("stop*", ser),width=15, height=3)
         self.buttonStop.pack()
         self.buttonStop.place(x=590, y=400)
-        
 
     def addingGrafieken(self,tab):
         #self.grafieken()
@@ -146,6 +151,9 @@ class Root(Tk):
         
 
     def addingInstellingen(self,tab, ser):
+        self.addGrafiekInstellingen(tab,ser)
+
+    def addGrafiekInstellingen(self,tab,ser):
         self.label2 = tk.Label(tab, text='Temperatuur grens (Celsius):')
         self.label2.place(x=20, y=20)
         self.setTemperatuur = tk.Entry(tab)
@@ -175,6 +183,8 @@ class Root(Tk):
         self.buttonMax.pack()
         self.buttonMax.place(x=50, y=400)
 
+    # def addCurrentInstellingen(self, tab, ser):
+    #     self.
 
     def stuurInstellingen(self, ser):
         try:
